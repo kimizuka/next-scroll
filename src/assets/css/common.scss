@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-touch-callout: none;
+}
+
+body {
+  font-family: 'Noto Sans JP', YuGothic, 'Yu Gothic', Meiryo, 'メイリオ', sans-serif;
+  font-feature-settings: 'palt';
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
