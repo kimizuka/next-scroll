@@ -16,7 +16,7 @@ let colors = [
   '#E0F2F1'
 ];
 
-const Index = styled.div`
+const Wrapper = styled.div`
   position: relative;
 
   .list {
@@ -90,7 +90,7 @@ const Index = styled.div`
   }
 `;
 
-export default function IndexPage() {
+export default function ScrollWrapper() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
   const [ scrollProgress, setScrollProgress ] = useState(0);
@@ -235,7 +235,7 @@ export default function IndexPage() {
   }
 
   return (
-    <Index>
+    <Wrapper>
       <ol className="list"> {
         colors.map((_, i) => {
           return (
@@ -268,6 +268,6 @@ export default function IndexPage() {
         }
         <li onClick={ () => handleClickBtn(1) }>100</li>
       </ol>
-    </Index>
+    </Wrapper>
   );
 }
