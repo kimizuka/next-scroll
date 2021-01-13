@@ -18,6 +18,7 @@ let colors = [
 
 const Wrapper = styled.div`
   position: relative;
+  transition: opacity .2s ease-in-out;
 
   .list {
     position: relative;
@@ -235,7 +236,7 @@ export default function ScrollWrapper() {
   }
 
   return (
-    <Wrapper>
+    <Wrapper className={ !!direction ? '' : 'transparent' }>
       <ol className="list"> {
         colors.map((_, i) => {
           return (

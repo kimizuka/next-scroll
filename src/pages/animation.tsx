@@ -9,14 +9,25 @@ const Wrapper = styled.div`
   position: fixed;
   top: 0; bottom: 0;
   left: 0; right: 0;
+  transition: opacity .2s ease-in-out;
 `;
 
 export default function AnimationPage() {
+  const [ isInit, setIsInit ] = useState(false);
   const [ animation, setAnimation ] = useState(new Animation({
     startValue: 0,
     targetValue: 0,
     duration: 1
   }));
+
+  useEffect(() => {
+    if (isInit) {
+      return;
+    }
+
+    setIsInit(true);
+
+  }, [isInit]);
 
   useEffect(() => {
     return () => {
@@ -39,7 +50,7 @@ export default function AnimationPage() {
   }
 
   return (
-    <Wrapper>
+    <Wrapper className={ isInit ? '' : 'transparent' }>
       <button onClick={ handleClickBtn }>start</button>
     </Wrapper>
   );
