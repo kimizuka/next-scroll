@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import Animation from '../assets/js/Animation';
+import Animation from '../../assets/js/Animation';
 
 const Wrapper = styled.div`
   display: flex;

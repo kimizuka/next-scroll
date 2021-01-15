@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import Animation from '../assets/js/Animation';
+import Animation from '../../assets/js/Animation';
 
 let colors = [
   '#E0F2F1',
