@@ -3,7 +3,7 @@ import styled, { createGlobalStyle, css } from 'styled-components';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 
-let length = 9;
+let animationLength = 8;
 
 const Wrapper = styled.div`
   position: relative;
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 
   .list {
     position: relative;
-    height: ${ 100 * length }vh;
+    height: ${ 100 * (animationLength + 1) }vh;
 
     li {
       display: flex;
@@ -31,13 +31,13 @@ const Wrapper = styled.div`
     ${(() => {
       let styles = '';
 
-      for (let i = 0; i < length; ++i) {
+      for (let i = 0; i < animationLength + 1; ++i) {
         styles += `
           li:nth-child(${ i + 1 }) {
-            height: ${ 100 / length }%;
+            height: ${ 100 / (animationLength + 1) }%;
 
             &:before {
-              content: '${ i === length - 1 ? 0 : i }';
+              content: '${ i === animationLength ? 0 : i }';
             }
           }
         `;
@@ -99,10 +99,10 @@ const Wrapper = styled.div`
     ${(() => {
       let styles = '';
 
-      for (let i = 0; i < length - 1; ++i) {
+      for (let i = 0; i < animationLength; ++i) {
         styles += `
           &[data-index='${ i }'] {
-            background-position: center ${ 100 / (length - 2) * i }%;
+            background-position: center ${ 100 / (animationLength - 1) * i }%;
           }
         `;
       }
@@ -110,7 +110,7 @@ const Wrapper = styled.div`
       return css`${ styles }`;
     })()}
 
-    &[data-index='${ length - 1 }'] {
+    &[data-index='${ animationLength }'] {
       background-position: center top;
     }
   }
@@ -282,7 +282,7 @@ export default function CrawlPage() {
         <style>html {'{'} background: #0277BD; {'}'}</style>
       </Head>
       <ol className="list"> {
-        (new Array(length).fill(null)).map((_, i) => {
+        (new Array(animationLength + 1).fill(null)).map((_, i) => {
           return (
             <li key={ i } />
           );
@@ -296,7 +296,7 @@ export default function CrawlPage() {
       </div>
       <ol className="btns">
         {
-          (new Array(length ).fill(null)).map((_, i, arr) => {
+          (new Array(animationLength + 1).fill(null)).map((_, i, arr) => {
             if (i === arr.length - 1) {
               return;
             }
@@ -314,7 +314,7 @@ export default function CrawlPage() {
         <li onClick={ () => handleClickBtn(1) }>100</li>
       </ol>
       <div
-        data-index={ 0 | (length - 1) * progress }
+        data-index={ Math.round(animationLength * progress) }
         className="crawl"
       />
     </Wrapper>
