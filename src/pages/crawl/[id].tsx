@@ -17,7 +17,7 @@ const Wrapper = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgba(0, 0, 255, .1);
+      color: rgba(0, 0, 255, .04);
       font-size: 50vh;
       font-weight: bold;
 
@@ -85,7 +85,7 @@ const Wrapper = styled.div`
     margin: auto;
     max-width: 600px; max-height: 300px;
     width: 100%;
-    background: url(/next-scroll/crawl/img.png) center top no-repeat;
+    background: url(${ process.env.NODE_ENV === 'production' ? '/next-scroll/' : '/' }crawl/img.png) center top no-repeat;
     background-size: cover;
     transform: translate(-50%, -50%);
     pointer-events: none;
@@ -282,7 +282,7 @@ export default function CrawlPage() {
         <style>html {'{'} background: #0277BD; {'}'}</style>
       </Head>
       <ol className="list"> {
-        (new Array(length + 1).fill(null)).map((_, i) => {
+        (new Array(length).fill(null)).map((_, i) => {
           return (
             <li key={ i } />
           );
