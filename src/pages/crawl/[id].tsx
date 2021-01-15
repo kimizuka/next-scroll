@@ -88,6 +88,7 @@ const Wrapper = styled.div`
     background: url(/next-scroll/crawl/img.png) center top no-repeat;
     background-size: cover;
     transform: translate(-50%, -50%);
+    pointer-events: none;
 
     &:after {
       display: block;
