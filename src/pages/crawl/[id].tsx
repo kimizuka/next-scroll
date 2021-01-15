@@ -85,7 +85,7 @@ const Wrapper = styled.div`
     margin: auto;
     max-width: 600px; max-height: 300px;
     width: 100%;
-    background: url(/crawl/img.png) center top no-repeat;
+    background: url(/next-scroll/crawl/img.png) center top no-repeat;
     background-size: cover;
     transform: translate(-50%, -50%);
 
