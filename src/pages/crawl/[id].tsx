@@ -268,7 +268,7 @@ export default function CrawlPage() {
         <meta property="og:title" content="scrawl" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://kimizuka.github.io/next-scroll/crawl/" />
-        <meta property="og:image" content="https://kimizuka.github.io/next-scroll/img/crawl/ogp.png" />
+        <meta property="og:image" content="https://kimizuka.github.io/next-scroll/crawl/ogp.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="600" />
         <meta property="og:site_name" content="scrawl" />
@@ -278,7 +278,7 @@ export default function CrawlPage() {
         <meta name="twitter:creator" content="@ki_230" />
         <meta name="twitter:title" content="scrawl" />
         <meta name="twitter:description" content="scrawl = scroll + crawl" />
-        <meta name="twitter:image:src" content="https://kimizuka.github.io/next-scroll/img/crawl/ogp.png" />
+        <meta name="twitter:image:src" content="https://kimizuka.github.io/next-scroll/crawl/ogp.png" />
         <style>html {'{'} background: #0277BD; {'}'}</style>
       </Head>
       <ol className="list"> {
