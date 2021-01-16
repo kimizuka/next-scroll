@@ -1,5 +1,6 @@
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
-  assetPrefix: isProd ? '/next-scroll' : ''
+  assetPrefix: isProd ? '/next-scroll' : '',
+  trailingSlash: true
 };
