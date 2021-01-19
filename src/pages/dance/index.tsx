@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { GLTFLoader } from '../../assets/js/three/examples/jsm/loaders/GLTFLoader';
+import { GLTFLoader } from '../../../node_modules/three/examples/jsm/loaders/GLTFLoader';
 import Animation from '../../assets/js/Animation';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import Head from 'next/head';
