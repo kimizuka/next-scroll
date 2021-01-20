@@ -357,7 +357,6 @@ export default function CrawlPage() {
         <meta name="twitter:title" content="scroll + dance" />
         <meta name="twitter:description" content="scroll + dance" />
         <meta name="twitter:image:src" content="https://kimizuka.github.io/next-scroll/dance/ogp.png" />
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
       </Head>
       <ol className="list"> {
         (new Array(animationLength + 1).fill(null)).map((_, i) => {
