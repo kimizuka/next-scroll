@@ -3,6 +3,7 @@ import { GLTFLoader } from '../../../node_modules/three/examples/jsm/loaders/GLT
 import Animation from '../../assets/js/Animation';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import Head from 'next/head';
+import Loading from '../../components/atoms/Loading';
 import { useEffect, useRef, useState } from 'react';
 
 let animationLength = 10;
@@ -91,6 +92,7 @@ const Wrapper = styled.div`
 `;
 
 export default function CrawlPage() {
+  const [ isShowLoading, setIsShowLoading ] = useState(false);
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
   const [ scrollProgress, setScrollProgress ] = useState(0);
@@ -234,7 +236,8 @@ export default function CrawlPage() {
         renderer.setAnimationLoop(tick);
 
         function tick() {
-          if (mixer){
+          if (mixer) {
+            setIsShowLoading(false);
             mixer.update(clock.getDelta());
           }
 
@@ -267,6 +270,8 @@ export default function CrawlPage() {
   }, [aspect])
 
   function init(): void {
+    setIsShowLoading(true);
+
     window.addEventListener('resize', handleResize, {
       passive: true
     });
@@ -387,6 +392,7 @@ export default function CrawlPage() {
         <li onClick={ () => handleClickBtn(1) }>100</li>
       </ol>
       <canvas ref={ canvas } />
+      <Loading isShow={ isShowLoading }  />
     </Wrapper>
   );
 }
