@@ -75,7 +75,9 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Loading({ isShow }) {
+export default function Loading({ isShow }: {
+  isShow: boolean;
+}) {
   return (
     <Wrapper data-is-show={ String(isShow) }>
       <ul className="circle">
