@@ -137,7 +137,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function CrawlPage() {
+export default function EasingPage() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
   const [ localProgress, setLocalProgress ] = useState(0);
@@ -289,7 +289,6 @@ export default function CrawlPage() {
     let cardIndex = currentCardIndex;
 
     if (!i && currentCardIndex === cardLength - 1) {
-      console.log('!');
       cardIndex = -1;
     }
 
@@ -299,22 +298,22 @@ export default function CrawlPage() {
   return (
     <Wrapper className={ !!direction ? '' : 'transparent' }>
       <Head>
-        <title>parallax</title>
-        <meta name="description" content="parallax" />
-        <meta property="og:title" content="parallax" />
+        <title>easing</title>
+        <meta name="description" content="easing" />
+        <meta property="og:title" content="easing" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://kimizuka.github.io/next-scroll/parallax/" />
-        <meta property="og:image" content="https://kimizuka.github.io/next-scroll/parallax/ogp.png" />
+        <meta property="og:url" content="https://kimizuka.github.io/next-scroll/easing/" />
+        <meta property="og:image" content="https://kimizuka.github.io/next-scroll/easing/ogp.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="600" />
-        <meta property="og:site_name" content="parallax" />
-        <meta property="og:description" content="parallax" />
+        <meta property="og:site_name" content="easing" />
+        <meta property="og:description" content="easing" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@ki_230" />
         <meta name="twitter:creator" content="@ki_230" />
-        <meta name="twitter:title" content="parallax" />
-        <meta name="twitter:description" content="parallax" />
-        <meta name="twitter:image:src" content="https://kimizuka.github.io/next-scroll/parallax/ogp.png" />
+        <meta name="twitter:title" content="easing" />
+        <meta name="twitter:description" content="easing" />
+        <meta name="twitter:image:src" content="https://kimizuka.github.io/next-scroll/easing/ogp.png" />
         <style>html {'{'} background: #EDEDED; {'}'}</style>
       </Head>
       <ol className="list"> {
