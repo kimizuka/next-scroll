@@ -1,4 +1,4 @@
-import Animation, { easeInOut } from '../../assets/js/Animation';
+import Animation from '../../assets/js/Animation';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
@@ -292,7 +292,6 @@ export default function DiagonalPage() {
       x: 160,
       y: 320
     };
-    const easingProgress = easeInOut(localProgress);
 
     let cardIndex = currentCardIndex;
 
@@ -307,9 +306,9 @@ export default function DiagonalPage() {
     }
 
     return `translate(
-      ${ distance.x * (easingProgress + cardIndex) - distance.x * index }px,
-      ${ distance.y * index - distance.y * (easingProgress + cardIndex) }px
-    ) rotate(${ -24 * index + 24 * (easingProgress + cardIndex) }deg)`;
+      ${ distance.x * (localProgress + cardIndex) - distance.x * index }px,
+      ${ distance.y * index - distance.y * (localProgress + cardIndex) }px
+    ) rotate(${ -24 * index + 24 * (localProgress + cardIndex) }deg)`;
   }
 
   return (
