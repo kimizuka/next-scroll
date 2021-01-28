@@ -300,20 +300,6 @@ export default function EasingPage() {
       <Head>
         <title>easing</title>
         <meta name="description" content="easing" />
-        <meta property="og:title" content="easing" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://kimizuka.github.io/next-scroll/easing/" />
-        <meta property="og:image" content="https://kimizuka.github.io/next-scroll/easing/ogp.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="600" />
-        <meta property="og:site_name" content="easing" />
-        <meta property="og:description" content="easing" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@ki_230" />
-        <meta name="twitter:creator" content="@ki_230" />
-        <meta name="twitter:title" content="easing" />
-        <meta name="twitter:description" content="easing" />
-        <meta name="twitter:image:src" content="https://kimizuka.github.io/next-scroll/easing/ogp.png" />
         <style>html {'{'} background: #EDEDED; {'}'}</style>
       </Head>
       <ol className="list"> {
