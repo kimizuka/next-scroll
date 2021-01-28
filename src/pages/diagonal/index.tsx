@@ -21,12 +21,6 @@ const Wrapper = styled.div`
       font-size: 100vh;
       font-weight: bold;
       text-align: 90vh;
-
-      &:last-child {
-        &:before {
-          content: '0' !important;
-        }
-      }
     }
 
     ${(() => {
@@ -36,10 +30,6 @@ const Wrapper = styled.div`
         styles += `
           li:nth-child(${ i + 1 }) {
             height: ${ 100 / (cardLength + 1) }%;
-
-            &:before {
-              content: '${ i === cardLength ? 0 : i }';
-            }
           }
         `;
       }
