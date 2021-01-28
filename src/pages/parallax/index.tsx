@@ -1,9 +1,9 @@
-import Animation from '../../assets/js/Animation';
+import Animation, { easeInOut } from '../../assets/js/Animation';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 
-let cardLength = 12;
+let cardLength = 8;
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,8 +18,9 @@ const Wrapper = styled.div`
       align-items: center;
       justify-content: center;
       color: rgba(0, 0, 0, .04);
-      font-size: 50vh;
+      font-size: 100vh;
       font-weight: bold;
+      text-align: 90vh;
 
       &:last-child {
         &:before {
@@ -47,6 +48,58 @@ const Wrapper = styled.div`
     })()}
   }
 
+  .card {
+    position: fixed;
+    top: 50%; left: 50%;
+    margin: -150px;
+    border-radius: 12px;
+    width: 300px; height: 300px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+    transform: translate(0, 0);
+
+    ${(() => {
+      let styles = '';
+
+      for (let i = 0; i < cardLength + 1; ++i) {
+        styles += `
+          &:nth-child(${ i + 1 }) {
+            .cover {
+              &:after {
+                content: '${ i === cardLength ? 0 : i }';
+              }
+            }
+          }
+        `;
+      }
+
+      return css`${ styles }`;
+    })()}
+
+    .cover {
+      width: 100%;
+      background: rgba(0, 0, 0, .4);
+
+      &:before {
+        display: block;
+        width: 100%; padding-top: 52.5%;
+        content: '';
+        transition: padding-top .2s ease-in-out;
+      }
+
+      &:after {
+        position: absolute;
+        top: 12%;
+        left: 0; right: 0;
+        color: rgba(0, 0, 0, .4);
+        font-size: 80px;
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+  }
+
   .debug {
     display: flex;
     align-items: center;
@@ -57,6 +110,10 @@ const Wrapper = styled.div`
     color: #fff;
     font-size: 10px;
     background: rgba(0, 0, 0, .4);
+
+    div {
+      text-align: center;
+    }
   }
 
   .btns {
@@ -83,8 +140,10 @@ const Wrapper = styled.div`
 export default function CrawlPage() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
+  const [ localProgress, setLocalProgress ] = useState(0);
   const [ scrollProgress, setScrollProgress ] = useState(0);
   const [ lastProgress, setLastProgress ] = useState(0);
+  const [ currentCardIndex, setCurrentCardIndex ] = useState(0);
   const [ contentsHeight, setContentsHeight ] = useState(0);
   const [ windowHeight, setWindowHeight ] = useState(0);
   const [ scrollY, setScrollY ] = useState(0);
@@ -123,6 +182,8 @@ export default function CrawlPage() {
 
     warp();
     setLastProgress(progress);
+    setLocalProgress(progress / (1 / cardLength) % 1);
+    setCurrentCardIndex(0 | progress / (1 / cardLength));
   }, [progress]);
 
   useEffect(() => {
@@ -224,6 +285,17 @@ export default function CrawlPage() {
     return Math.max(.0002, Math.min(val, .9999));
   }
 
+  function getTranslate(i: number) {
+    let cardIndex = currentCardIndex;
+
+    if (!i && currentCardIndex === cardLength - 1) {
+      console.log('!');
+      cardIndex = -1;
+    }
+
+    return `translate(0, ${ windowHeight * i - windowHeight * (easeInOut(localProgress) + cardIndex) }px)`;
+  }
+
   return (
     <Wrapper className={ !!direction ? '' : 'transparent' }>
       <Head>
@@ -252,9 +324,26 @@ export default function CrawlPage() {
           );
         })
       } </ol>
+      <ol className="cards"> {
+        (new Array(cardLength).fill(null)).map((_, i) => {
+          return (
+            <li
+              key={ i }
+              className="card"
+              style={{
+                transform: getTranslate(i)
+              }}
+            >
+              <div className="cover" />
+            </li>
+          );
+        })
+      } </ol>
       <div className="debug">
         <div>
           <p>{ (progress * 100).toFixed(2) }</p>
+          <p>{ (localProgress * 100).toFixed(2) }</p>
+          <p>{ currentCardIndex }</p>
           <p>{ direction }</p>
         </div>
       </div>
