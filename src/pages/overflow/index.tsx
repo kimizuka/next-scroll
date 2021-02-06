@@ -365,7 +365,10 @@ export default function ScrollWrapper() {
             <p>{ String(isScrolling) }</p>
           </div>
         </div>
-        <ol className="btns">
+        <ol
+          style={{ display: 'none' }}
+          className="btns"
+        >
         {
           (new Array(cardLength + 1).fill(null)).map((_, i, arr) => {
             if (i === arr.length - 1) {
