@@ -1,5 +1,5 @@
 import Animation from '../../assets/js/Animation';
-import styled, { createGlobalStyle, css } from 'styled-components';
+import styled, { css } from 'styled-components';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 
