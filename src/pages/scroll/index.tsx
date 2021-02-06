@@ -94,8 +94,8 @@ const Wrapper = styled.div`
 export default function ScrollWrapper() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
-  const [ scrollProgress, setScrollProgress ] = useState(null);
   const [ lastProgress, setLastProgress ] = useState(0);
+  const [ scrollProgress, setScrollProgress ] = useState(null);
   const [ contentsHeight, setContentsHeight ] = useState(0);
   const [ windowHeight, setWindowHeight ] = useState(0);
   const [ scrollY, setScrollY ] = useState(0);
@@ -146,7 +146,7 @@ export default function ScrollWrapper() {
   }, [scrollProgress]);
 
   useEffect(() => {
-    if (contentsHeight - windowHeight) {
+    if (contentsHeight && windowHeight) {
       setProgress(scrollY / (contentsHeight - windowHeight));
     }
   }, [scrollY]);
