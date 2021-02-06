@@ -94,7 +94,7 @@ const Wrapper = styled.div`
 export default function ScrollWrapper() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
-  const [ scrollProgress, setScrollProgress ] = useState(0);
+  const [ scrollProgress, setScrollProgress ] = useState(null);
   const [ lastProgress, setLastProgress ] = useState(0);
   const [ contentsHeight, setContentsHeight ] = useState(0);
   const [ windowHeight, setWindowHeight ] = useState(0);
@@ -137,7 +137,12 @@ export default function ScrollWrapper() {
   }, [progress]);
 
   useEffect(() => {
+    if (typeof scrollProgress !== 'number') {
+      return;
+    }
+
     window.scrollTo(window.scrollX, (contentsHeight - windowHeight) * scrollProgress);
+    setScrollProgress(null);
   }, [scrollProgress]);
 
   useEffect(() => {
@@ -184,9 +189,9 @@ export default function ScrollWrapper() {
 
   function warp(): void {
     if (1 <= progress && direction === 'down') {
-      window.scrollTo(window.scrollX, 1);
+      setScrollProgress(normalize(0));
     } else if (progress <= 0 && direction === 'up') {
-      window.scrollTo(window.scrollX, contentsHeight - windowHeight - 1);
+      setScrollProgress(normalize(1));
     }
   }
 
