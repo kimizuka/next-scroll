@@ -16,26 +16,8 @@ const Wrapper = styled.div`
     height: ${ 100 * (cardLength + 1) }vh;
 
     li {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 64px;
-      font-weight: bold;
+      height: ${ 100 / (cardLength + 1) }%;
     }
-
-    ${(() => {
-      let styles = '';
-
-      for (let i = 0; i < cardLength + 1; ++i) {
-        styles += `
-          li:nth-child(${ i + 1 }) {
-            height: ${ 100 / (cardLength + 1) }%;
-          }
-        `;
-      }
-
-      return css`${ styles }`;
-    })()}
   }
 
   .cards {
