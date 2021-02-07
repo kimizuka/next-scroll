@@ -245,7 +245,6 @@ export default function ScrollWrapper() {
   }
 
   function handleResize() {
-    setWindowWidth(window.innerWidth);
     setWindowHeight(window.innerHeight);
     setContentsHeight(wrapperInnerRef.current.clientHeight);
   }
