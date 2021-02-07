@@ -138,7 +138,6 @@ export default function ScrollWrapper() {
   const [ scrollProgress, setScrollProgress ] = useState(null);
   const [ currentCardIndex, setCurrentCardIndex ] = useState(0);
   const [ contentsHeight, setContentsHeight ] = useState(0);
-  const [ windowWidth, setWindowWidth ] = useState(0);
   const [ windowHeight, setWindowHeight ] = useState(0);
   const [ scrollY, setScrollY ] = useState(0);
   const [ animation, setAnimation ] = useState(new Animation({
