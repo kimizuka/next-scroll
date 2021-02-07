@@ -304,7 +304,6 @@ export default function ScrollWrapper() {
       onScroll={ handleScroll }
       onWheel={ handleWheel }
       ref={ wrapperRef }
-      id="wrapper"
       className={ !!direction ? '' : 'transparent' }
     >
       <div ref={ wrapperInnerRef }>
