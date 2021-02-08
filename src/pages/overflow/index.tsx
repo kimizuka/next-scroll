@@ -14,10 +14,6 @@ const Wrapper = styled.div`
   .list {
     position: relative;
     height: ${ 100 * (cardLength + 1) }vh;
-
-    li {
-      height: ${ 100 / (cardLength + 1) }%;
-    }
   }
 
   .cards {
@@ -181,7 +177,7 @@ export default function ScrollWrapper() {
   }, [scrollProgress]);
 
   useEffect(() => {
-    if (contentsHeight && windowHeight) {
+    if (contentsHeight - windowHeight) {
       setProgress(scrollY / (contentsHeight - windowHeight));
     }
   }, [scrollY]);
@@ -271,7 +267,7 @@ export default function ScrollWrapper() {
     );
   }
 
-  function normalize(val: number): number {
+  function normalize(val: number) {
     return Math.max(.0002, Math.min(val, .9999));
   }
 
