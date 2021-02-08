@@ -9,33 +9,9 @@ const Wrapper = styled.div`
   position: relative;
   transition: opacity .2s ease-in-out;
 
-  .list {
+  .spacer {
     position: relative;
     height: ${ 100 * (cardLength + 1) }vh;
-
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(0, 0, 0, .04);
-      font-size: 100vh;
-      font-weight: bold;
-      text-align: 90vh;
-    }
-
-    ${(() => {
-      let styles = '';
-
-      for (let i = 0; i < cardLength + 1; ++i) {
-        styles += `
-          li:nth-child(${ i + 1 }) {
-            height: ${ 100 / (cardLength + 1) }%;
-          }
-        `;
-      }
-
-      return css`${ styles }`;
-    })()}
   }
 
   .card {
@@ -130,9 +106,9 @@ const Wrapper = styled.div`
 export default function DiagonalPage() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
-  const [ localProgress, setLocalProgress ] = useState(0);
-  const [ scrollProgress, setScrollProgress ] = useState(0);
   const [ lastProgress, setLastProgress ] = useState(0);
+  const [ localProgress, setLocalProgress ] = useState(0);
+  const [ scrollProgress, setScrollProgress ] = useState(null);
   const [ currentCardIndex, setCurrentCardIndex ] = useState(0);
   const [ contentsHeight, setContentsHeight ] = useState(0);
   const [ windowWidth, setWindowWidth ] = useState(0);
@@ -178,7 +154,12 @@ export default function DiagonalPage() {
   }, [progress]);
 
   useEffect(() => {
+    if (typeof scrollProgress !== 'number') {
+      return;
+    }
+
     window.scrollTo(window.scrollX, (contentsHeight - windowHeight) * scrollProgress);
+    setScrollProgress(null);
   }, [scrollProgress]);
 
   useEffect(() => {
@@ -223,11 +204,11 @@ export default function DiagonalPage() {
     setScrollProgress(normalize(0));
   }
 
-  function warp(): void {
+  function warp() {
     if (1 <= progress && direction === 'down') {
-      window.scrollTo(window.scrollX, 1);
+      setScrollProgress(normalize(0));
     } else if (progress <= 0 && direction === 'up') {
-      window.scrollTo(window.scrollX, contentsHeight - windowHeight - 1);
+      setScrollProgress(normalize(1));
     }
   }
 
@@ -241,7 +222,7 @@ export default function DiagonalPage() {
     setScrollY(window.scrollY);
   }
 
-  function handleClickBtn(targetProgress: number): void {
+  function handleClickBtn(targetProgress: number) {
     const startProgress = progress;
     const isReverse = Math.abs(targetProgress - startProgress) > .5;
     const diff = targetProgress - startProgress;
@@ -273,7 +254,7 @@ export default function DiagonalPage() {
     );
   }
 
-  function normalize(val: number): number {
+  function normalize(val: number) {
     return Math.max(.0002, Math.min(val, .9999));
   }
 
@@ -308,13 +289,7 @@ export default function DiagonalPage() {
         <meta name="description" content="diagonal" />
         <style>html {'{'} background: #EDEDED; {'}'}</style>
       </Head>
-      <ol className="list"> {
-        (new Array(cardLength + 1).fill(null)).map((_, i) => {
-          return (
-            <li key={ i } />
-          );
-        })
-      } </ol>
+      <div className="spacer" />
       <ol className="cards"> {
         (new Array(cardLength).fill(null)).map((_, i) => {
           return (

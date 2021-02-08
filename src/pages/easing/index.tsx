@@ -140,9 +140,9 @@ const Wrapper = styled.div`
 export default function EasingPage() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
-  const [ localProgress, setLocalProgress ] = useState(0);
-  const [ scrollProgress, setScrollProgress ] = useState(0);
   const [ lastProgress, setLastProgress ] = useState(0);
+  const [ localProgress, setLocalProgress ] = useState(0);
+  const [ scrollProgress, setScrollProgress ] = useState(null);
   const [ currentCardIndex, setCurrentCardIndex ] = useState(0);
   const [ contentsHeight, setContentsHeight ] = useState(0);
   const [ windowHeight, setWindowHeight ] = useState(0);
@@ -187,7 +187,12 @@ export default function EasingPage() {
   }, [progress]);
 
   useEffect(() => {
+    if (typeof scrollProgress !== 'number') {
+      return;
+    }
+
     window.scrollTo(window.scrollX, (contentsHeight - windowHeight) * scrollProgress);
+    setScrollProgress(null);
   }, [scrollProgress]);
 
   useEffect(() => {

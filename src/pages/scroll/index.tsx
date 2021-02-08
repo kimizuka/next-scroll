@@ -146,7 +146,7 @@ export default function ScrollWrapper() {
   }, [scrollProgress]);
 
   useEffect(() => {
-    if (contentsHeight && windowHeight) {
+    if (contentsHeight - windowHeight) {
       setProgress(scrollY / (contentsHeight - windowHeight));
     }
   }, [scrollY]);
