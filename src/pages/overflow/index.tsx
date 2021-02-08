@@ -14,28 +14,6 @@ const Wrapper = styled.div`
   .list {
     position: relative;
     height: ${ 100 * (cardLength + 1) }vh;
-
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 64px;
-      font-weight: bold;
-    }
-
-    ${(() => {
-      let styles = '';
-
-      for (let i = 0; i < cardLength + 1; ++i) {
-        styles += `
-          li:nth-child(${ i + 1 }) {
-            height: ${ 100 / (cardLength + 1) }%;
-          }
-        `;
-      }
-
-      return css`${ styles }`;
-    })()}
   }
 
   .cards {
@@ -138,7 +116,6 @@ export default function ScrollWrapper() {
   const [ scrollProgress, setScrollProgress ] = useState(null);
   const [ currentCardIndex, setCurrentCardIndex ] = useState(0);
   const [ contentsHeight, setContentsHeight ] = useState(0);
-  const [ windowWidth, setWindowWidth ] = useState(0);
   const [ windowHeight, setWindowHeight ] = useState(0);
   const [ scrollY, setScrollY ] = useState(0);
   const [ animation, setAnimation ] = useState(new Animation({
@@ -200,7 +177,7 @@ export default function ScrollWrapper() {
   }, [scrollProgress]);
 
   useEffect(() => {
-    if (contentsHeight && windowHeight) {
+    if (contentsHeight - windowHeight) {
       setProgress(scrollY / (contentsHeight - windowHeight));
     }
   }, [scrollY]);
@@ -246,7 +223,6 @@ export default function ScrollWrapper() {
   }
 
   function handleResize() {
-    setWindowWidth(window.innerWidth);
     setWindowHeight(window.innerHeight);
     setContentsHeight(wrapperInnerRef.current.clientHeight);
   }
@@ -291,7 +267,7 @@ export default function ScrollWrapper() {
     );
   }
 
-  function normalize(val: number): number {
+  function normalize(val: number) {
     return Math.max(.0002, Math.min(val, .9999));
   }
 
@@ -324,7 +300,6 @@ export default function ScrollWrapper() {
       onScroll={ handleScroll }
       onWheel={ handleWheel }
       ref={ wrapperRef }
-      id="wrapper"
       className={ !!direction ? '' : 'transparent' }
     >
       <div ref={ wrapperInnerRef }>

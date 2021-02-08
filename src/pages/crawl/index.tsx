@@ -1,50 +1,20 @@
 import Animation from '../../assets/js/Animation';
-import styled, { createGlobalStyle, css } from 'styled-components';
+import styled, { css } from 'styled-components';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 let animationLength = 8;
 
 const Wrapper = styled.div`
-  position: relative;
+  position: fixed;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
   transition: opacity .2s ease-in-out;
+  overflow: scroll;
 
-  .list {
+  .spacer {
     position: relative;
     height: ${ 100 * (animationLength + 1) }vh;
-
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(0, 0, 255, .04);
-      font-size: 50vh;
-      font-weight: bold;
-
-      &:last-child {
-        &:before {
-          content: '0' !important;
-        }
-      }
-    }
-
-    ${(() => {
-      let styles = '';
-
-      for (let i = 0; i < animationLength + 1; ++i) {
-        styles += `
-          li:nth-child(${ i + 1 }) {
-            height: ${ 100 / (animationLength + 1) }%;
-
-            &:before {
-              content: '${ i === animationLength ? 0 : i }';
-            }
-          }
-        `;
-      }
-
-      return css`${ styles }`;
-    })()}
   }
 
   .debug {
@@ -119,8 +89,8 @@ const Wrapper = styled.div`
 export default function CrawlPage() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
-  const [ scrollProgress, setScrollProgress ] = useState(0);
   const [ lastProgress, setLastProgress ] = useState(0);
+  const [ scrollProgress, setScrollProgress ] = useState(null);
   const [ contentsHeight, setContentsHeight ] = useState(0);
   const [ windowHeight, setWindowHeight ] = useState(0);
   const [ scrollY, setScrollY ] = useState(0);
@@ -129,6 +99,10 @@ export default function CrawlPage() {
     targetValue: 0,
     duration: 1
   }));
+  const [ isScrolling, setIsScrolling ] = useState(false);
+  const [ isScrollingTimer, setIsScrollingTimer ] = useState(setTimeout(() => {}, 0));
+  const wrapperRef = useRef(null);
+  const wrapperInnerRef = useRef(null);
 
   useEffect(() => {
     if (!direction) {
@@ -159,10 +133,20 @@ export default function CrawlPage() {
 
     warp();
     setLastProgress(progress);
+    setIsScrolling(true);
+    clearTimeout(isScrollingTimer);
+    setIsScrollingTimer(setTimeout(() => {
+      setIsScrolling(false);
+    }, 40));
   }, [progress]);
 
   useEffect(() => {
-    window.scrollTo(window.scrollX, (contentsHeight - windowHeight) * scrollProgress);
+    if (typeof scrollProgress !== 'number') {
+      return;
+    }
+
+    wrapperRef.current.scrollTo(window.scrollX, (contentsHeight - windowHeight) * scrollProgress);
+    setScrollProgress(null);
   }, [scrollProgress]);
 
   useEffect(() => {
@@ -172,21 +156,21 @@ export default function CrawlPage() {
   }, [scrollY]);
 
   useEffect(() => {
-    window.addEventListener('mousedown', cancelScroll, {
+    wrapperRef.current.addEventListener('mousedown', cancelScroll, {
       passive: false
     });
-    window.addEventListener('wheel', cancelScroll, {
+    wrapperRef.current.addEventListener('wheel', cancelScroll, {
       passive: false
     });
-    window.addEventListener('touchstart', cancelScroll, {
+    wrapperRef.current.addEventListener('touchstart', cancelScroll, {
       passive: false
     });
 
     return () => {
       animation.stop();
-      window.removeEventListener('mousedown', cancelScroll);
-      window.removeEventListener('wheel', cancelScroll);
-      window.removeEventListener('touchstart', cancelScroll);
+      wrapperRef.current.removeEventListener('mousedown', cancelScroll);
+      wrapperRef.current.removeEventListener('wheel', cancelScroll);
+      wrapperRef.current.removeEventListener('touchstart', cancelScroll);
     }
 
     function cancelScroll() {
@@ -194,12 +178,8 @@ export default function CrawlPage() {
     }
   }, [animation]);
 
-  function init(): void {
+  function init() {
     window.addEventListener('resize', handleResize, {
-      passive: true
-    });
-
-    document.addEventListener('scroll', handleScroll, {
       passive: true
     });
 
@@ -207,24 +187,28 @@ export default function CrawlPage() {
     setScrollProgress(normalize(0));
   }
 
-  function warp(): void {
+  function warp() {
     if (1 <= progress && direction === 'down') {
-      window.scrollTo(window.scrollX, 1);
+      setScrollProgress(normalize(0));
     } else if (progress <= 0 && direction === 'up') {
-      window.scrollTo(window.scrollX, contentsHeight - windowHeight - 1);
+      setScrollProgress(normalize(1));
     }
   }
 
-  function handleResize(): void {
-    setContentsHeight(document.getElementById('app').clientHeight);
+  function handleResize() {
     setWindowHeight(window.innerHeight);
+    setContentsHeight(wrapperInnerRef.current.clientHeight);
   }
 
-  function handleScroll(): void {
-    setScrollY(window.scrollY);
+  function handleScroll() {
+    setScrollY(wrapperRef.current.scrollTop);
   }
 
-  function handleClickBtn(targetProgress: number): void {
+  function handleWheel() {
+    setIsScrolling(true);
+  }
+
+  function handleClickBtn(targetProgress: number) {
     const startProgress = progress;
     const isReverse = Math.abs(targetProgress - startProgress) > .5;
     const diff = targetProgress - startProgress;
@@ -256,12 +240,17 @@ export default function CrawlPage() {
     );
   }
 
-  function normalize(val: number): number {
+  function normalize(val: number) {
     return Math.max(.0002, Math.min(val, .9999));
   }
 
   return (
-    <Wrapper className={ !!direction ? '' : 'transparent' }>
+    <Wrapper
+      onScroll={ handleScroll }
+      onWheel={ handleWheel }
+      ref={ wrapperRef }
+      className={ !!direction ? '' : 'transparent' }
+    >
       <Head>
         <title>scrawl</title>
         <meta name="description" content="scrawl = scroll + crawl" />
@@ -281,42 +270,38 @@ export default function CrawlPage() {
         <meta name="twitter:image:src" content="https://kimizuka.github.io/next-scroll/crawl/ogp.png" />
         <style>html {'{'} background: #0277BD; {'}'}</style>
       </Head>
-      <ol className="list"> {
-        (new Array(animationLength + 1).fill(null)).map((_, i) => {
-          return (
-            <li key={ i } />
-          );
-        })
-      } </ol>
-      <div className="debug">
-        <div>
-          <p>{ (progress * 100).toFixed(2) }</p>
-          <p>{ direction }</p>
+      <div ref={ wrapperInnerRef }>
+        <div className="spacer" />
+        <div className="debug">
+          <div>
+            <p>{ (progress * 100).toFixed(2) }</p>
+            <p>{ direction }</p>
+          </div>
         </div>
+        <ol className="btns">
+          {
+            (new Array(animationLength + 1).fill(null)).map((_, i, arr) => {
+              if (i === arr.length - 1) {
+                return;
+              }
+
+              const progress = i / (arr.length - 1);
+
+              return (
+                <li
+                  key={ i }
+                  onClick={ () => handleClickBtn(progress) }
+                >{ (progress * 100).toFixed(2) }</li>
+              );
+            })
+          }
+          <li onClick={ () => handleClickBtn(1) }>100</li>
+        </ol>
+        <div
+          data-index={ Math.round(animationLength * progress) }
+          className="crawl"
+        />
       </div>
-      <ol className="btns">
-        {
-          (new Array(animationLength + 1).fill(null)).map((_, i, arr) => {
-            if (i === arr.length - 1) {
-              return;
-            }
-
-            const progress = i / (arr.length - 1);
-
-            return (
-              <li
-                key={ i }
-                onClick={ () => handleClickBtn(progress) }
-              >{ (progress * 100).toFixed(2) }</li>
-            );
-          })
-        }
-        <li onClick={ () => handleClickBtn(1) }>100</li>
-      </ol>
-      <div
-        data-index={ Math.round(animationLength * progress) }
-        className="crawl"
-      />
     </Wrapper>
   );
 }
