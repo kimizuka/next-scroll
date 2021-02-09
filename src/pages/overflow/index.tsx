@@ -18,6 +18,8 @@ const Wrapper = styled.div`
   }
 
   .cards {
+    pointer-events: none;
+
     &[data-is-scrolling='true'] {
       pointer-events: none;
     }
