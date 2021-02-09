@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import Animation from '../../assets/js/Animation';
+import Animation, { easeInOut } from '../../assets/js/Animation';
 
-let cardLength = 8;
+let cardLength = 6;
 
 const Wrapper = styled.div`
   position: fixed;
@@ -41,9 +41,7 @@ const Wrapper = styled.div`
         styles += `
           &:nth-child(${ i + 1 }) {
             .cover {
-              &:after {
-                content: '${ i === cardLength ? 0 : i }';
-              }
+              background-image: url(/overflow/${ i + 1 }.png);
             }
           }
         `;
@@ -54,24 +52,15 @@ const Wrapper = styled.div`
 
     .cover {
       width: 100%;
-      background: rgba(0, 0, 0, .4);
+      background: center no-repeat;
+      background-size: cover;
       pointer-events: none;
 
       &:before {
         display: block;
-        width: 100%; padding-top: 52.5%;
+        width: 100%; padding-top: 100%;
         content: '';
         transition: padding-top .2s ease-in-out;
-      }
-
-      &:after {
-        position: absolute;
-        top: 12%;
-        left: 0; right: 0;
-        color: rgba(0, 0, 0, .4);
-        font-size: 80px;
-        font-weight: bold;
-        text-align: center;
       }
     }
   }
@@ -106,6 +95,29 @@ const Wrapper = styled.div`
       }
     }
   }
+
+  .checkboxes {
+    position: fixed;
+    margin: 8px;
+    bottom: 0;
+    font-size: 10px;
+
+    &[data-is-right-hand='true'] {
+      right: 0;
+    }
+
+    &[data-is-right-hand='false'] {
+      left: 0;
+    }
+
+    label {
+      display: block;
+    }
+
+    .checkbox {
+      margin: 8px;
+    }
+  }
 `;
 
 export default function ScrollWrapper() {
@@ -124,6 +136,8 @@ export default function ScrollWrapper() {
     duration: 1
   }));
   const [ isScrolling, setIsScrolling ] = useState(false);
+  const [ isRightHand, setIsRightHand ] = useState(true);
+  const [ isEasing, setIsEasing ] = useState(false);
   const [ isScrollingTimer, setIsScrollingTimer ] = useState(setTimeout(() => {}, 0));
   const wrapperRef = useRef(null);
   const wrapperInnerRef = useRef(null);
@@ -158,7 +172,14 @@ export default function ScrollWrapper() {
 
     warp();
     setLastProgress(progress);
-    setLocalProgress(progress / (1 / cardLength) % 1);
+
+    if (isEasing) {
+      setLocalProgress(
+        easeInOut(progress / (1 / cardLength) % 1)
+      );
+    } else {
+      setLocalProgress(progress / (1 / cardLength) % 1);
+    }
     setCurrentCardIndex(0 | progress / (1 / cardLength));
     setIsScrolling(true);
     clearTimeout(isScrollingTimer);
@@ -178,7 +199,7 @@ export default function ScrollWrapper() {
 
   useEffect(() => {
     if (contentsHeight - windowHeight) {
-      setProgress(scrollY / (contentsHeight - windowHeight));
+      setProgress(easeInOut(scrollY / (contentsHeight - windowHeight)));
     }
   }, [scrollY]);
 
@@ -244,7 +265,7 @@ export default function ScrollWrapper() {
       new Animation({
         startValue: 0,
         targetValue: targetProgress,
-        duration: 800,
+        duration: 400,
         easing: 'easeInOut',
         step: isReverse ? (val: number) => {
           const direction = diff < 0 ? 1 : -1;
@@ -268,14 +289,18 @@ export default function ScrollWrapper() {
   }
 
   function normalize(val: number) {
-    return Math.max(.0002, Math.min(val, .9999));
+    return Math.max(.0004, Math.min(val, .9999));
   }
 
   function getTranslate(index: number) {
-    const distance = {
+    const distance = isRightHand ? {
       x: 160,
       y: 320
+    } : {
+      x: -160,
+      y: 320
     };
+    const direction = isRightHand ? 1 : -1;
 
     let cardIndex = currentCardIndex;
 
@@ -292,7 +317,7 @@ export default function ScrollWrapper() {
     return `translate(
       ${ distance.x * (localProgress + cardIndex) - distance.x * index }px,
       ${ distance.y * index - distance.y * (localProgress + cardIndex) }px
-    ) rotate(${ -24 * index + 24 * (localProgress + cardIndex) }deg)`;
+    ) rotate(${ -24 * direction * index + 24 * direction * (localProgress + cardIndex) }deg)`;
   }
 
   return (
@@ -330,38 +355,40 @@ export default function ScrollWrapper() {
             );
           })
         } </ol>
-        <div className="debug">
-          <div>
-            <p>{ scrollY }</p>
-            <p>{ (progress * 100).toFixed(2) }</p>
-            <p>{ (localProgress * 100).toFixed(2) }</p>
-            <p>{ currentCardIndex }</p>
-            <p>{ direction }</p>
-            <p>{ String(isScrolling) }</p>
-          </div>
+      </div>
+      <div
+        style={ { display: 'none' } }
+        className="debug"
+      >
+        <div>
+          <p>{ scrollY }</p>
+          <p>{ (progress * 100).toFixed(2) }</p>
+          <p>{ (localProgress * 100).toFixed(2) }</p>
+          <p>{ currentCardIndex }</p>
+          <p>{ direction }</p>
+          <p>{ String(isScrolling) }</p>
         </div>
-        <ol
-          style={{ display: 'none' }}
-          className="btns"
-        >
-        {
-          (new Array(cardLength + 1).fill(null)).map((_, i, arr) => {
-            if (i === arr.length - 1) {
-              return;
-            }
-
-            const progress = i / (arr.length - 1);
-
-            return (
-              <li
-                key={ i }
-                onClick={ () => handleClickBtn(progress) }
-              >{ (progress * 100).toFixed(2) }</li>
-            );
-          })
-        }
-        <li onClick={ () => handleClickBtn(1) }>100</li>
-        </ol>
+      </div>
+      <div
+        data-is-right-hand={ String(isRightHand) }
+        className="checkboxes"
+      >
+        <label>
+          <input
+            onChange={ () => setIsRightHand(!isRightHand) }
+            checked={ isRightHand }
+            type="checkbox"
+          />
+          <span>isRightHand</span>
+        </label>
+        <label>
+          <input
+            onChange={ () => setIsEasing(!isEasing) }
+            checked={ isEasing }
+            type="checkbox"
+          />
+          <span>Easing</span>
+        </label>
       </div>
     </Wrapper>
   );
