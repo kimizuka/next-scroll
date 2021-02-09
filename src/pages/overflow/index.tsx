@@ -200,7 +200,7 @@ export default function ScrollWrapper() {
 
   useEffect(() => {
     if (contentsHeight - windowHeight) {
-      setProgress(easeInOut(scrollY / (contentsHeight - windowHeight)));
+      setProgress(scrollY / (contentsHeight - windowHeight));
     }
   }, [scrollY]);
 
