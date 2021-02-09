@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import Animation, { easeInOut } from '../../assets/js/Animation';
@@ -327,6 +328,24 @@ export default function ScrollWrapper() {
       ref={ wrapperRef }
       className={ !!direction ? '' : 'transparent' }
     >
+      <Head>
+        <title>diagonal scroll</title>
+        <meta name="description" content="diagonal scroll" />
+        <meta property="og:title" content="diagonal scroll" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://kimizuka.github.io/next-scroll/overflow/" />
+        <meta property="og:image" content="https://kimizuka.github.io/next-scroll/overflow/ogp.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="600" />
+        <meta property="og:site_name" content="diagonal scroll" />
+        <meta property="og:description" content="diagonal scroll" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@ki_230" />
+        <meta name="twitter:creator" content="@ki_230" />
+        <meta name="twitter:title" content="diagonal scroll" />
+        <meta name="twitter:description" content="diagonal scroll" />
+        <meta name="twitter:image:src" content="https://kimizuka.github.io/next-scroll/overflow/ogp.png" />
+      </Head>
       <div ref={ wrapperInnerRef }>
         <ol className="list"> {
           (new Array(cardLength + 1).fill(null)).map((_, i) => {
