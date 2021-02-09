@@ -41,7 +41,7 @@ const Wrapper = styled.div`
         styles += `
           &:nth-child(${ i + 1 }) {
             .cover {
-              background-image: url(/overflow/${ i + 1 }.png);
+              background-image: url(${ process.env.NODE_ENV === 'production' ? '/next-scroll/' : '/' }overflow/${ i + 1 }.png);
             }
           }
         `;
