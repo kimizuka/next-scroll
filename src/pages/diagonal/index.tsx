@@ -1,9 +1,9 @@
-import Animation from '../../assets/js/Animation';
-import styled, { css } from 'styled-components';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
+import Animation, { easeInOut } from '../../assets/js/Animation';
 
-let cardLength = 8;
+let cardLength = 6;
 
 const Wrapper = styled.div`
   position: relative;
@@ -24,6 +24,7 @@ const Wrapper = styled.div`
     overflow: hidden;
     box-shadow: 0 0 8px rgba(0, 0, 0, .2);
     transform: translate(0, 0);
+    cursor: pointer;
 
     ${(() => {
       let styles = '';
@@ -32,9 +33,7 @@ const Wrapper = styled.div`
         styles += `
           &:nth-child(${ i + 1 }) {
             .cover {
-              &:after {
-                content: '${ i === cardLength ? 0 : i }';
-              }
+              background-image: url(${ process.env.NODE_ENV === 'production' ? '/next-scroll/' : '/' }overflow/${ i + 1 }.png);
             }
           }
         `;
@@ -45,23 +44,15 @@ const Wrapper = styled.div`
 
     .cover {
       width: 100%;
-      background: rgba(0, 0, 0, .4);
+      background: center no-repeat;
+      background-size: cover;
+      pointer-events: none;
 
       &:before {
         display: block;
-        width: 100%; padding-top: 52.5%;
+        width: 100%; padding-top: 100%;
         content: '';
         transition: padding-top .2s ease-in-out;
-      }
-
-      &:after {
-        position: absolute;
-        top: 12%;
-        left: 0; right: 0;
-        color: rgba(0, 0, 0, .4);
-        font-size: 80px;
-        font-weight: bold;
-        text-align: center;
       }
     }
   }
@@ -295,6 +286,7 @@ export default function DiagonalPage() {
           return (
             <li
               key={ i }
+              onClick={ () => handleClickBtn(i / cardLength) }
               className="card"
               style={{
                 transform: getTranslate(i)
