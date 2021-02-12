@@ -32,8 +32,8 @@ jobs:
 
       - name: export
         run: yarn export
-          env:
-            CI: true
+        env:
+          CI: true
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
