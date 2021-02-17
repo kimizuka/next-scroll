@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import useScroll from './useScroll';
 
