@@ -91,7 +91,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function ScrollWrapper() {
+export default function ScrollPage() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
   const [ lastProgress, setLastProgress ] = useState(0);
@@ -174,7 +174,7 @@ export default function ScrollWrapper() {
     }
   }, [animation]);
 
-  function init(): void {
+  function init() {
     window.addEventListener('resize', handleResize, {
       passive: true
     });
@@ -187,7 +187,7 @@ export default function ScrollWrapper() {
     setScrollProgress(normalize(0));
   }
 
-  function warp(): void {
+  function warp() {
     if (1 <= progress && direction === 'down') {
       setScrollProgress(normalize(0));
     } else if (progress <= 0 && direction === 'up') {
@@ -195,16 +195,16 @@ export default function ScrollWrapper() {
     }
   }
 
-  function handleResize(): void {
+  function handleResize() {
     setContentsHeight(document.getElementById('app').clientHeight);
     setWindowHeight(window.innerHeight);
   }
 
-  function handleScroll(): void {
+  function handleScroll() {
     setScrollY(window.scrollY);
   }
 
-  function handleClickBtn(targetProgress: number): void {
+  function handleClickBtn(targetProgress: number) {
     const startProgress = progress;
     const isReverse = Math.abs(targetProgress - startProgress) > .5;
     const diff = targetProgress - startProgress;

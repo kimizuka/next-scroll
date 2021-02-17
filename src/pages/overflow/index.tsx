@@ -123,7 +123,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function ScrollWrapper() {
+export default function OverflowPage() {
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
   const [ lastProgress, setLastProgress ] = useState(0);

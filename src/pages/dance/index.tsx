@@ -61,7 +61,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function CrawlPage() {
+export default function DancePage() {
   const [ isShowLoading, setIsShowLoading ] = useState(false);
   const [ direction, setDirection ] = useState('');
   const [ progress, setProgress ] = useState(0);
