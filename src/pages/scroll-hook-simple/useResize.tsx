@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export default function useResize() {
+const useResize = () => {
   const [ windowWidth, setWindowWidth ] = useState(0);
   const [ windowHeight, setWindowHeight ] = useState(0);
 
@@ -22,5 +22,7 @@ export default function useResize() {
     setWindowHeight(window.innerHeight);
   }
 
-  return { windowWidth, windowHeight };
+  return [ windowWidth, windowHeight ];
 }
+
+export default useResize;

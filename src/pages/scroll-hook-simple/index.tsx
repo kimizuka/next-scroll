@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import useResize from './useResize';
 import useScroll from './useScroll';
 
@@ -12,9 +12,9 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function ScrollHookPage() {
-  const { windowWidth, windowHeight } = useResize();
-  const { scrollLeft, scrollTop } = useScroll();
+export default function ScrollHookSimplePage() {
+  const [ windowWidth, windowHeight ] = useResize();
+  const [ scrollLeft, scrollTop ] = useScroll();
 
   return (
     <Wrapper>

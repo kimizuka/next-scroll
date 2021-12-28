@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export default function useScroll() {
+const useScroll = () => {
   const [ scrollTop, setScrollTop ] = useState(0);
   const [ scrollLeft, setScrollLeft] = useState(0);
 
@@ -22,5 +22,7 @@ export default function useScroll() {
     setScrollLeft(window.scrollX);
   }
 
-  return { scrollLeft, scrollTop }
+  return [ scrollLeft, scrollTop ];
 }
+
+export default useScroll;
