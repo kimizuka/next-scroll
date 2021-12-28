@@ -12,10 +12,13 @@ const Wrapper = styled.div`
     top: 0; left: 0;
     padding: 8px;
   }
+  
+  button {
+    margin-top: 8px;
+  }
 `;
 
 export default function ScrollHookSimplePageWithArguments() {
-  const spacerRef = useRef(null);
   const [ parentElement, setParentElement ] = useState<Window>(null);
   const [ scrollElement, setScrollElement ] = useState<HTMLElement>(null);
   const [ setScrollProgress, scrollProgress ] = useScrollProgress(parentElement, scrollElement);
@@ -32,6 +35,7 @@ export default function ScrollHookSimplePageWithArguments() {
       </div>
       <div className="logs">
         <p>progress: { scrollProgress * 100 }%</p>
+        <button onClick={ () => setScrollProgress(.5) }>50%</button>
       </div>
     </Wrapper>
   );
