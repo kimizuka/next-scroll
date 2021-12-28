@@ -1,18 +1,16 @@
 import styled from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useScrollProgress from './useScrollProgress';
 
 const Wrapper = styled.div`
-  .spacer {
-    height: 1000vh;
-  }
+  height: 1000vh;
 
   .logs {
     position: fixed;
     top: 0; left: 0;
     padding: 8px;
   }
-  
+
   button {
     margin-top: 8px;
   }
@@ -30,9 +28,6 @@ export default function ScrollHookSimplePageWithArguments() {
 
   return (
     <Wrapper>
-      <div className="spacer">
-        
-      </div>
       <div className="logs">
         <p>progress: { scrollProgress * 100 }%</p>
         <button onClick={ () => setScrollProgress(.5) }>50%</button>
