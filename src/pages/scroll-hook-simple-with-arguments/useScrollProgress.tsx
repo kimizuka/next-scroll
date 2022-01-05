@@ -19,6 +19,7 @@ export default function useScrollProgress(parentElement: Window | HTMLElement | 
 
   useEffect(() => {
     if (scrollElement) {
+      setClientHeight(scrollElement.clientHeight);
       setClosureScrollProgress(Math.max(Math.min(scrollTop / (clientHeight - windowHeight), 1), 0));
     }
   }, [scrollTop, windowHeight]);
